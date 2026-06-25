@@ -1,0 +1,11 @@
+{
+  "name": "Smart Probation Ecosystem",
+  "description": "ระบบคุมประพฤติอัจฉริยะแบบครบวงจรสำหรับผู้ถูกคุมความประพฤติ เจ้าหน้าที่คุมประพฤติ และหน่วยงานบริการสังคมภาคี",
+  "requestFramePermissions": [
+    "camera",
+    "geolocation"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
