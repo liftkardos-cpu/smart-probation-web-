@@ -1,6 +1,6 @@
 import React from "react";
 import { useApp } from "../context/AppContext";
-import progressLogo from "../assets/images/progress_logo_new_1782556334626.jpg";
+import progressMonogram from "../assets/images/progress_monogram_1782675476258.jpg";
 import {
   Home,
   User,
@@ -91,7 +91,7 @@ export const Sidebar: React.FC<{ onClose?: () => void; className?: string }> = (
           {/* Circular border outer, then dark blue inner */}
           <div className="w-16 h-16 bg-[#001D3D] rounded-full border-2 border-[#cca43b]/60 flex items-center justify-center shadow-lg relative overflow-hidden p-0.5">
             <img
-              src={progressLogo}
+              src={progressMonogram}
               alt="PROGRESS+ Logo"
               className="w-full h-full object-cover rounded-full"
               referrerPolicy="no-referrer"
