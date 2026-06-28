@@ -59,7 +59,7 @@ export const LoginView: React.FC = () => {
       borderColor: "border-amber-500/20",
       textAccent: "text-amber-700",
       avatarInitials: "EP",
-      imageSrc: "/src/assets/images/6711010186.jpg"
+      imageSrc: "/assets/images/6711010186.jpg"
     },
     {
       name: "นางสาวชลิดา ขุนแก้ว",
@@ -68,7 +68,7 @@ export const LoginView: React.FC = () => {
       borderColor: "border-blue-500/20",
       textAccent: "text-blue-700",
       avatarInitials: "CL",
-      imageSrc: "/src/assets/images/student_6711010272_1782390537646.jpg"
+      imageSrc: "/assets/images/student_6711010272_1782390537646.jpg"
     },
     {
       name: "นางสาวณัจยา ศรีมณี",
@@ -77,7 +77,7 @@ export const LoginView: React.FC = () => {
       borderColor: "border-purple-500/20",
       textAccent: "text-purple-700",
       avatarInitials: "NJ",
-      imageSrc: "/src/assets/images/6711010080.jpg"
+      imageSrc: "/assets/images/6711010080.jpg"
     },
     {
       name: "นางสาวอลิชาเฟียร์ สามะ",
@@ -86,7 +86,7 @@ export const LoginView: React.FC = () => {
       borderColor: "border-rose-500/20",
       textAccent: "text-rose-700",
       avatarInitials: "AF",
-      imageSrc: "/src/assets/images/6711010476.jpg"
+      imageSrc: "/assets/images/6711010476.jpg"
     },
     {
       name: "นางสาวศรุตา แซ่โอ้ว",
@@ -95,7 +95,7 @@ export const LoginView: React.FC = () => {
       borderColor: "border-emerald-500/20",
       textAccent: "text-emerald-700",
       avatarInitials: "SR",
-      imageSrc: "/src/assets/images/6711010438.jpg"
+      imageSrc: "/assets/images/6711010438.jpg"
     }
   ];
 
@@ -232,7 +232,7 @@ export const LoginView: React.FC = () => {
             <div className="flex items-center space-x-3.5">
               <div className="w-14 h-14 shrink-0 shadow-md bg-[#001D3D] rounded-full border border-[#cca43b]/40 overflow-hidden p-0.5">
                 <img
-                  src="/src/assets/images/progress_logo_new_1782556334626.jpg"
+                  src="/assets/images/progress_logo_new_1782556334626.jpg"
                   alt="PROGRESS+ Logo"
                   className="w-full h-full object-cover rounded-full"
                   referrerPolicy="no-referrer"
@@ -463,8 +463,8 @@ export const LoginView: React.FC = () => {
               {/* Form logo */}
               <div className="flex justify-center -mb-2">
                 <div className="w-16 h-16 bg-[#001D3D] rounded-2xl border border-[#cca43b]/30 flex items-center justify-center p-0.5 shadow-md relative overflow-hidden">
-                  <img
-                    src="/src/assets/images/progress_logo_new_1782556334626.jpg"
+                   <img
+                    src="/assets/images/progress_logo_new_1782556334626.jpg"
                     alt="PROGRESS+ Logo"
                     className="w-full h-full object-cover rounded-xl"
                     referrerPolicy="no-referrer"
@@ -837,7 +837,7 @@ export const LoginView: React.FC = () => {
                           const target = e.currentTarget;
                           if (target.src.includes('student_')) {
                             // Try loading by student ID directly if custom path fails
-                            target.src = `/src/assets/images/${creators[activeCreatorIdx].studentId}.jpg`;
+                            target.src = `/assets/images/${creators[activeCreatorIdx].studentId}.jpg`;
                           } else {
                             setImageErrors(prev => ({ ...prev, [activeCreatorIdx]: true }));
                           }
@@ -999,7 +999,7 @@ export const LoginView: React.FC = () => {
                 <div className="flex items-center space-x-3.5 relative z-10">
                   <div className="w-12 h-12 rounded-xl bg-slate-900/50 border border-[#cca43b]/40 flex items-center justify-center overflow-hidden shrink-0">
                     <img
-                      src="/src/assets/images/progress_logo_new_1782556334626.jpg"
+                      src="/assets/images/progress_logo_new_1782556334626.jpg"
                       alt="PROGRESS+ Logo"
                       className="w-full h-full object-cover"
                       referrerPolicy="no-referrer"
