@@ -7,6 +7,10 @@ import progressHorizontalLogo from "../assets/images/progress_horizontal_logo_17
 import progressAppIcon from "../assets/images/progress_app_icon_1782678504850.jpeg";
 import progressMonogram from "../assets/images/progress_monogram_1782675476258.jpeg";
 import studentChonlida from "../assets/images/student_6711010272_1782390537646.jpeg";
+import studentEkraprawee from "../assets/images/student_6711010186_1782682785023.jpeg";
+import studentSaruta from "../assets/images/student_6711010438_saruta_1782683063590.jpeg";
+import studentNatjaya from "../assets/images/student_6711010080_natjaya_1782683085035.jpeg";
+import studentAlisha from "../assets/images/student_6711010476_alisha_1782683103340.jpeg";
 import { 
   Eye, 
   EyeOff, 
@@ -64,7 +68,7 @@ export const LoginView: React.FC = () => {
       borderColor: "border-amber-500/20",
       textAccent: "text-amber-700",
       avatarInitials: "EP",
-      imageSrc: "/assets/images/6711010186.jpeg"
+      imageSrc: studentEkraprawee
     },
     {
       name: "นางสาวชลิดา ขุนแก้ว",
@@ -82,7 +86,7 @@ export const LoginView: React.FC = () => {
       borderColor: "border-purple-500/20",
       textAccent: "text-purple-700",
       avatarInitials: "NJ",
-      imageSrc: "/assets/images/6711010080.jpeg"
+      imageSrc: studentNatjaya
     },
     {
       name: "นางสาวอลิชาเฟียร์ สามะ",
@@ -91,7 +95,7 @@ export const LoginView: React.FC = () => {
       borderColor: "border-rose-500/20",
       textAccent: "text-rose-700",
       avatarInitials: "AF",
-      imageSrc: "/assets/images/6711010476.jpeg"
+      imageSrc: studentAlisha
     },
     {
       name: "นางสาวศรุตา แซ่โอ้ว",
@@ -100,7 +104,7 @@ export const LoginView: React.FC = () => {
       borderColor: "border-emerald-500/20",
       textAccent: "text-emerald-700",
       avatarInitials: "SR",
-      imageSrc: "/assets/images/6711010438.jpeg"
+      imageSrc: studentSaruta
     }
   ];
 
