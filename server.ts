@@ -151,6 +151,19 @@ async function startServer() {
 
   app.use(express.json());
 
+  // Serve direct favicon.ico and logo requests (critical for iOS, LINE, Messenger webviews)
+  app.get("/favicon.ico", (req, res) => {
+    res.sendFile(path.join(process.cwd(), "src/assets/images/progress_app_icon_1782678504850.jpeg"));
+  });
+
+  app.get("/logo.png", (req, res) => {
+    res.sendFile(path.join(process.cwd(), "src/assets/images/progress_app_icon_1782678504850.jpeg"));
+  });
+
+  app.get("/logo.jpeg", (req, res) => {
+    res.sendFile(path.join(process.cwd(), "src/assets/images/progress_app_icon_1782678504850.jpeg"));
+  });
+
   // Initialize Gemini AI client
   const geminiApiKey = process.env.GEMINI_API_KEY;
   let ai: GoogleGenAI | null = null;
