@@ -130,6 +130,8 @@ export interface ChatMessage {
   role: "user" | "model";
   text: string;
   timestamp: Date;
+  sources?: Array<{ title: string; uri: string }>;
+  suggestedActions?: string[];
 }
 
 export interface EmergencyRequest {

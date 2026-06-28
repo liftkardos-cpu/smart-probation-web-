@@ -127,7 +127,7 @@ const INITIAL_ACTIVITIES: Activity[] = [
           cooperation: 5,
           behavior: 5,
           comment: "ตั้งใจทำงานดีมาก ให้ความร่วมมือกับทีมงานและพระสงฆ์เป็นอย่างดี สุภาพเรียบร้อยดีมาก",
-          date: "25 พ.ค. 2567"
+          date: "25 พ.ค. 2570"
         }
       }
     ]
@@ -161,7 +161,7 @@ const INITIAL_ACTIVITIES: Activity[] = [
           cooperation: 4,
           behavior: 4,
           comment: "มาถึงก่อนเวลา ทำงานทาสีอย่างขยันขันแข็ง ปฏิบัติตามคำสั่งดี",
-          date: "22 พ.ค. 2567"
+          date: "22 พ.ค. 2570"
         }
       },
       {
@@ -177,7 +177,7 @@ const INITIAL_ACTIVITIES: Activity[] = [
           cooperation: 4,
           behavior: 4,
           comment: "มาสายนิดหน่อย แต่ช่วยยกถังสีและอุปกรณ์ได้ดี พูดจาสุภาพ",
-          date: "22 พ.ค. 2567"
+          date: "22 พ.ค. 2570"
         }
       }
     ]
@@ -298,7 +298,7 @@ const INITIAL_NOTIFICATIONS: NotificationItem[] = [
   {
     id: "not-1",
     title: "ใกล้ถึงวันรายงานตัวครั้งถัดไป",
-    description: "คุณมีกำหนดการรายงานตัวตามคำสั่งศาลในอีก 5 วัน (วันที่ 20 พฤษภาคม 2567 เวลา 08:30 น.) กรุณาจัดเตรียมบัตรประจำตัวประชาชน",
+    description: "คุณมีกำหนดการรายงานตัวตามคำสั่งศาลในอีก 5 วัน (วันที่ 20 พฤษภาคม 2570 เวลา 08:30 น.) กรุณาจัดเตรียมบัตรประจำตัวประชาชน",
     timeAgo: "10 นาทีที่แล้ว",
     category: "รายงานตัว",
     isRead: false,
@@ -444,7 +444,7 @@ const INITIAL_EMERGENCY_REQUESTS: EmergencyRequest[] = [
     reason: "พาหนะเดินทางชำรุดเสียหาย",
     details: "รถจักรยานยนต์ยางระเบิดขณะเดินทางไปบำเพ็ญประโยชน์ที่วัดเขารูปช้าง ไม่สามารถไปทันกำหนดรายงานตัวได้",
     location: { lat: 7.1352, lng: 100.6215 },
-    timestamp: "26 มิถุนายน 2569 09:15 น.",
+    timestamp: "26 มิถุนายน 2570 09:15 น.",
     status: "รอการติดต่อกลับ"
   }
 ];
@@ -455,7 +455,7 @@ const INITIAL_OBSERVATION_NOTES: ObservationNote[] = [
     probationerId: "PB6705-123456",
     probationerName: "นายสมชาย ใจดี",
     content: "ติดตามตรวจเยี่ยมสถานที่ทำงานอาสาคืบหน้าเรียบร้อยดี มีความขยันขันแข็งและตรงต่อเวลา และได้รับคำชื่นชมจากทางวัดบ่อยางในการช่วยทำความสะอาด",
-    timestamp: "18 มิถุนายน 2569 14:30 น.",
+    timestamp: "18 มิถุนายน 2570 14:30 น.",
     officerName: "นายณัฐพงษ์ มั่นคง"
   },
   {
@@ -463,7 +463,7 @@ const INITIAL_OBSERVATION_NOTES: ObservationNote[] = [
     probationerId: "PB6705-123457",
     probationerName: "นายธนวัฒน์ รักดี",
     content: "เข้ารับการปรึกษาร่วมกับพนักงานคุมประพฤติและวิทยากรหลักสูตรบำบัดฟื้นฟูยาเสพติด CBT แสดงทัศนคติที่ดี มีความตั้งใจสูงในการเลิกพฤติกรรมเสี่ยง",
-    timestamp: "20 มิถุนายน 2569 11:15 น.",
+    timestamp: "20 มิถุนายน 2570 11:15 น.",
     officerName: "นายณัฐพงษ์ มั่นคง"
   },
   {
@@ -471,7 +471,7 @@ const INITIAL_OBSERVATION_NOTES: ObservationNote[] = [
     probationerId: "PB6705-123458",
     probationerName: "นายวิชัย ใจกล้า",
     content: "โทรสอบถามติดตามสาเหตุที่ไม่เดินทางมารายงานตัวตามนัดหมาย พบว่ามีอุปสรรคเรื่องรายได้และครอบครัวขัดแย้ง แนะนำแนวทางลดปัญหาเบื้องต้นแล้ว",
-    timestamp: "22 มิถุนายน 2569 10:00 น.",
+    timestamp: "22 มิถุนายน 2570 10:00 น.",
     officerName: "นายณัฐพงษ์ มั่นคง"
   }
 ];
@@ -481,7 +481,7 @@ const INITIAL_RISK_ASSESSMENTS: RiskAssessmentRecord[] = [
     id: "RISK-201",
     probationerId: "PB6705-123456",
     probationerName: "นายสมชาย ใจดี",
-    date: "15 พฤษภาคม 2569",
+    date: "15 พฤษภาคม 2570",
     crimeHistory: 0,
     drugUsage: 0,
     environment: 1,
@@ -495,7 +495,7 @@ const INITIAL_RISK_ASSESSMENTS: RiskAssessmentRecord[] = [
     id: "RISK-202",
     probationerId: "PB6705-123457",
     probationerName: "นายธนวัฒน์ รักดี",
-    date: "18 พฤษภาคม 2569",
+    date: "18 พฤษภาคม 2570",
     crimeHistory: 1,
     drugUsage: 2,
     environment: 1,
@@ -509,7 +509,7 @@ const INITIAL_RISK_ASSESSMENTS: RiskAssessmentRecord[] = [
     id: "RISK-203",
     probationerId: "PB6705-123458",
     probationerName: "นายวิชัย ใจกล้า",
-    date: "20 พฤษภาคม 2569",
+    date: "20 พฤษภาคม 2570",
     crimeHistory: 2,
     drugUsage: 3,
     environment: 2,
@@ -1011,7 +1011,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         status: probationerProfile.status,
         completedHours: probationerProfile.completedHours,
         requiredHours: probationerProfile.requiredHours,
-        nextReportDate: "20 พฤษภาคม 2567 เวลา 08:30 น.",
+        nextReportDate: "20 พฤษภาคม 2570 เวลา 08:30 น.",
         behaviorScore: probationerProfile.behaviorScore,
         currentView: currentView
       };
@@ -1038,7 +1038,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         id: `ai-${Date.now()}`,
         role: "model",
         text: data.text || "ขออภัยค่ะ ระบบแชทขัดข้องชั่วคราว กรุณาลองใหม่อีกครั้งนะคะ",
-        timestamp: new Date()
+        timestamp: new Date(),
+        sources: data.sources,
+        suggestedActions: data.suggestedActions
       };
       
       setChatHistory(prev => [...prev, aiMsg]);
@@ -1047,8 +1049,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       const errMsg: ChatMessage = {
         id: `ai-err-${Date.now()}`,
         role: "model",
-        text: "ขออภัยค่ะ ดูเหมือนการสื่อสารกับเซิร์ฟเวอร์ AI ขัดข้องชั่วคราว แต่หนูสามารถแจ้งข้อมูลได้ว่าคุณสมชายมีคิวรายงานตัวครั้งต่อไปใน วันที่ 20 พฤษภาคม 2567 นี้ค่ะ",
-        timestamp: new Date()
+        text: "ขออภัยค่ะ ดูเหมือนการสื่อสารกับเซิร์ฟเวอร์ AI ขัดข้องชั่วคราว แต่หนูสามารถแจ้งข้อมูลได้ว่าคุณสมชายมีคิวรายงานตัวครั้งต่อไปใน วันที่ 20 พฤษภาคม 2570 นี้ค่ะ",
+        timestamp: new Date(),
+        suggestedActions: [
+          "เช็กวันรายงานตัวครั้งถัดไปและเงื่อนไขของฉัน",
+          "ช่วยแนะนำงานฝึกวิชาชีพด้านช่างฝีมือเทคนิค",
+          "เกณฑ์การประเมินคะแนนความประพฤติคืออะไร"
+        ]
       };
       setChatHistory(prev => [...prev, errMsg]);
     }

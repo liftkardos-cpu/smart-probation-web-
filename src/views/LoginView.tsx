@@ -404,7 +404,7 @@ export const LoginView: React.FC = () => {
             {/* 2. Translucent Stats Card ("ข้อมูลภาพรวม ( ณ วันที่ 20 พฤษภาคม 2567 )") */}
             <div className="bg-white/40 backdrop-blur-md border border-white/50 p-5 rounded-3xl shadow-sm space-y-4">
               <h4 className="text-xs font-bold text-blue-900 uppercase tracking-wider pl-1">
-                ข้อมูลภาพรวม <span className="text-[10px] text-slate-500 font-medium tracking-normal">( ณ วันที่ 20 พฤษภาคม 2567 )</span>
+                ข้อมูลภาพรวม <span className="text-[10px] text-slate-500 font-medium tracking-normal">( ณ วันที่ 20 พฤษภาคม 2570 )</span>
               </h4>
 
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 text-left">
@@ -470,7 +470,7 @@ export const LoginView: React.FC = () => {
             <div className="bg-white rounded-[32px] p-8 lg:p-10 shadow-xl border border-white/60 max-w-[460px] w-full space-y-6 relative z-10">
               
               {/* Form logo */}
-              <div className="flex justify-center -mb-2">
+              <div className="flex justify-center mb-4">
                 <div className="w-16 h-16 bg-[#001D3D] rounded-2xl border border-[#cca43b]/30 flex items-center justify-center p-0.5 shadow-md relative overflow-hidden">
                    <img
                     src={progressAppIcon}
@@ -813,7 +813,7 @@ export const LoginView: React.FC = () => {
           <div className="text-center mb-6">
             <span className="text-[10px] bg-blue-100 text-blue-700 px-3 py-1 rounded-full font-bold tracking-wider uppercase">คณะผู้จัดทำนวัตกรรม</span>
             <h3 className="text-base md:text-lg font-black text-[#031d44] tracking-tight mt-2">
-              ผู้คิดค้นและพัฒนาระบบนิเวศอัจฉริยะ PROGRESS+
+              คณะผู้จัดทำระบบเว็บไซต์ PROGRESS+
             </h3>
             <p className="text-xs text-slate-500 font-semibold mt-1">
               สาขาการบริหารงานตำรวจและกระบวนการยุติธรรม วิทยาลัยการจัดการเพื่อการพัฒนา มหาวิทยาลัยทักษิณ

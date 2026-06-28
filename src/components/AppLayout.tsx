@@ -32,6 +32,7 @@ import { OfficerSettings } from "../views/officer/OfficerSettings";
 
 // Partner Views
 import { PartnerDashboard } from "../views/partner/PartnerDashboard";
+import { FloatingBot } from "./FloatingBot";
 
 // Secondary Fallbacks and Utilities
 import { Calendar, ShieldAlert, CheckCircle, BarChart3, Settings, HelpCircle, UserCheck } from "lucide-react";
@@ -218,6 +219,9 @@ export const AppLayout: React.FC = () => {
         </main>
 
       </div>
+
+      {/* Floating Robot AI Assistant (P+) */}
+      <FloatingBot />
 
     </div>
   );
