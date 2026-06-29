@@ -1446,7 +1446,7 @@ export const LoginView: React.FC = () => {
               className="relative w-full max-w-4xl aspect-video rounded-3xl overflow-hidden bg-black/90 shadow-[0_0_60px_rgba(0,0,0,0.85)] border border-white/10"
             >
               <video
-                src="/videos/intro_video.mp4"
+                src="/videos/intro_video.mp4?v=1.0.1"
                 controls
                 autoPlay
                 muted
