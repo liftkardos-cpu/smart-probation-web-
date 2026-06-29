@@ -45,6 +45,12 @@ import {
   Video
 } from "lucide-react";
 
+// =============================================================
+// กำหนดลิงก์วิดีโอแนะนำระบบตรงนี้ (คุณสามารถนำลิงก์ไฟล์วิดีโอ .mp4 จริงของคุณมาใส่แทนได้เลย)
+// สามารถใส่ลิงก์ตรงจาก Cloud Storage, Google Drive (direct link), Vercel blob หรือ CDN อื่นๆ ได้
+// =============================================================
+const INTRO_VIDEO_URL = "https://www.w3schools.com/html/mov_bbb.mp4";
+
 export const LoginView: React.FC = () => {
   const { setRole, setIsLoggedIn, addNotification, probationers, updateProbationerProfile } = useApp();
   const [selectedTab, setSelectedTab] = useState<UserRole>("PROBATIONER");
@@ -1446,7 +1452,7 @@ export const LoginView: React.FC = () => {
               className="relative w-full max-w-4xl aspect-video rounded-3xl overflow-hidden bg-black/90 shadow-[0_0_60px_rgba(0,0,0,0.85)] border border-white/10"
             >
               <video
-                src="/videos/intro_video.mp4?v=1.0.1"
+                src={INTRO_VIDEO_URL}
                 controls
                 autoPlay
                 muted
