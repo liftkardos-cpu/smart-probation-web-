@@ -44,7 +44,6 @@ import {
   Shield,
   Video
 } from "lucide-react";
-import introVideo from "../assets/videos/intro_video.mp4";
 
 export const LoginView: React.FC = () => {
   const { setRole, setIsLoggedIn, addNotification, probationers, updateProbationerProfile } = useApp();
@@ -1436,145 +1435,75 @@ export const LoginView: React.FC = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-[200] flex items-center justify-center p-4 md:p-6"
+            className="fixed inset-0 bg-slate-950/75 backdrop-blur-3xl z-[200] flex flex-col items-center justify-center p-4 md:p-8"
           >
+            {/* Frameless Cinematic Video Player (Apple / Instagram Style) */}
             <motion.div
-              initial={{ scale: 0.93, y: 30 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.93, y: 30 }}
-              transition={{ type: "spring", duration: 0.55 }}
-              className="bg-white rounded-[32px] shadow-2xl max-w-4xl w-full border border-slate-100 overflow-hidden flex flex-col max-h-[95vh] md:max-h-[90vh]"
+              initial={{ scale: 0.95, opacity: 0, y: 30 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.95, opacity: 0, y: 30 }}
+              transition={{ type: "spring", damping: 26, stiffness: 220 }}
+              className="relative w-full max-w-4xl aspect-video rounded-3xl overflow-hidden bg-black/90 shadow-[0_0_60px_rgba(0,0,0,0.85)] border border-white/10"
             >
-              {/* Header */}
-              <div className="bg-gradient-to-r from-[#031d44] to-[#0b2545] p-5 md:p-6 text-white flex items-center justify-between border-b border-blue-900/40 relative overflow-hidden shrink-0">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(30,58,138,0.4),transparent)] pointer-events-none" />
-                <div className="flex items-center space-x-3.5 relative z-10">
-                  <div className="w-12 h-12 rounded-2xl bg-blue-500/10 border border-[#cca43b]/40 flex items-center justify-center overflow-hidden shrink-0">
-                    <Video className="w-6 h-6 text-[#cca43b]" />
-                  </div>
-                  <div>
-                    <span className="text-[10px] bg-[#cca43b]/20 text-[#cca43b] px-2 py-0.5 rounded-full font-bold tracking-wider uppercase">WELCOME INTRO</span>
-                    <h3 className="text-lg md:text-xl font-black tracking-tight mt-0.5">แนะนำระบบนิเวศอัจฉริยะ PROGRESS+</h3>
-                    <p className="text-xs text-slate-300 font-medium font-sans">ก้าวใหม่ สู่โอกาสใหม่ - วิดีโออธิบายความสามารถหลักและวิธีเริ่มต้นใช้งาน</p>
-                  </div>
-                </div>
-                <button
-                  onClick={handleCloseIntroVideo}
-                  className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-slate-200 hover:text-white transition-all cursor-pointer relative z-10"
-                >
-                  <X className="w-5 h-5" />
-                </button>
+              <video
+                src="/videos/intro_video.mp4"
+                controls
+                autoPlay
+                muted
+                loop
+                playsInline
+                className="w-full h-full object-contain"
+              />
+
+              {/* Minimal Floating Close Circle (Frosted Glass) */}
+              <button
+                onClick={handleCloseIntroVideo}
+                className="absolute top-4 right-4 md:top-6 md:right-6 w-11 h-11 rounded-full bg-black/40 hover:bg-black/65 border border-white/15 backdrop-blur-md flex items-center justify-center text-white/90 hover:text-white hover:scale-105 active:scale-95 transition-all cursor-pointer z-10 shadow-lg"
+                title="ปิด"
+              >
+                <X className="w-5.5 h-5.5" />
+              </button>
+
+              {/* Tiny Floating Sound Hint */}
+              <div className="absolute top-4 left-4 md:top-6 md:left-6 bg-black/50 backdrop-blur-md px-3.5 py-1.5 rounded-full text-[10px] text-white/90 font-medium tracking-wide flex items-center space-x-2 border border-white/10 pointer-events-none shadow-md">
+                <span className="w-1.5 h-1.5 bg-amber-400 rounded-full animate-pulse" />
+                <span>🔊 กดเปิดเสียงที่ตัวควบคุมวิดีโอ</span>
               </div>
+            </motion.div>
 
-              {/* Video Player & Info Area */}
-              <div className="flex-1 overflow-y-auto p-5 md:p-6 space-y-6">
-                
-                {/* Embedded Video Player */}
-                <div className="aspect-video w-full rounded-2xl overflow-hidden bg-black border border-slate-200/60 shadow-lg relative group">
-                  <video
-                    src={introVideo}
-                    controls
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    className="w-full h-full object-contain"
-                  />
-                  
-                  {/* Floating reminder for sound */}
-                  <div className="absolute top-3 right-3 bg-slate-900/80 backdrop-blur-md px-3 py-1.5 rounded-full text-[10px] text-white font-semibold flex items-center space-x-1.5 border border-white/10 pointer-events-none shadow-sm">
-                    <span className="w-1.5 h-1.5 bg-amber-400 rounded-full animate-ping" />
-                    <span>🔊 คลิกสัญลักษณ์ลำโพงที่แถบควบคุมเพื่อเปิดเสียง</span>
-                  </div>
+            {/* Glassmorphic Minimalist Controls below Video */}
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 15 }}
+              transition={{ delay: 0.15 }}
+              className="mt-6 flex flex-col sm:flex-row items-center gap-4 text-white font-medium"
+            >
+              {/* Checkbox (Modern Round Bubble style) */}
+              <label className="flex items-center cursor-pointer select-none bg-white/5 hover:bg-white/10 border border-white/10 px-5 py-2.5 rounded-full backdrop-blur-md transition-all active:scale-98">
+                <input
+                  type="checkbox"
+                  checked={dontShowIntroAgain}
+                  onChange={(e) => setDontShowIntroAgain(e.target.checked)}
+                  className="sr-only peer"
+                />
+                <div className="w-4 h-4 bg-transparent border border-white/35 rounded-full peer-checked:bg-amber-500 peer-checked:border-amber-500 transition-all flex items-center justify-center shadow-inner">
+                  <svg viewBox="0 0 24 24" className="w-2.5 h-2.5 text-black stroke-3 fill-none stroke-current" style={{ display: dontShowIntroAgain ? "block" : "none" }}>
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
                 </div>
+                <span className="ml-3 text-white/90 font-sans text-xs tracking-wide">
+                  ไม่ต้องแสดงวิดีโอนี้อีกในครั้งถัดไป
+                </span>
+              </label>
 
-                {/* Platform Highlights / Info Card */}
-                <div className="bg-slate-50 border border-slate-100 rounded-2xl p-5 space-y-4">
-                  <h4 className="text-sm font-bold text-slate-800 flex items-center space-x-2">
-                    <Sparkles className="w-4 h-4 text-amber-500 shrink-0" />
-                    <span>จุดเด่นสำคัญของระบบ PROGRESS+ ในวิดีโอนี้</span>
-                  </h4>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    {/* Item 1: Probationer */}
-                    <div className="bg-white p-4 rounded-xl border border-slate-200/50 space-y-1.5 shadow-xs">
-                      <span className="text-[11px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-md uppercase tracking-wider">สำหรับผู้ถูกคุมประพฤติ</span>
-                      <p className="text-xs font-bold text-slate-800 pt-1">รายงานตัว & พัฒนาพฤติกรรม</p>
-                      <p className="text-[11px] text-slate-500 leading-relaxed font-medium">
-                        ใช้งานแผนที่ GPS เช็กอินรายงานตัว, แชทปรึกษาอัจฉริยะกับบอท, ลงทะเบียนอบรมวิชาชีพ และเข้าถึงการช่วยเหลือโดยตรง
-                      </p>
-                    </div>
-
-                    {/* Item 2: Officer */}
-                    <div className="bg-white p-4 rounded-xl border border-slate-200/50 space-y-1.5 shadow-xs">
-                      <span className="text-[11px] font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-md uppercase tracking-wider">สำหรับเจ้าหน้าที่</span>
-                      <p className="text-xs font-bold text-slate-800 pt-1">วิเคราะห์ประเมิน & ติดตามเชิงลึก</p>
-                      <p className="text-[11px] text-slate-500 leading-relaxed font-medium">
-                        แดชบอร์ดติดตามแบบเรียลไทม์, ตรวจพฤติกรรมการทำงาน, วิเคราะห์ความเสี่ยงกระทำผิดซ้ำเพื่อการวางแผนฟื้นฟูเฉพาะบุคคล
-                      </p>
-                    </div>
-
-                    {/* Item 3: Partner */}
-                    <div className="bg-white p-4 rounded-xl border border-slate-200/50 space-y-1.5 shadow-xs">
-                      <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md uppercase tracking-wider">สำหรับหน่วยงานภาคี</span>
-                      <p className="text-xs font-bold text-slate-800 pt-1">เปิดรับสมัครงาน & มอบโอกาสใหม่</p>
-                      <p className="text-[11px] text-slate-500 leading-relaxed font-medium">
-                        สร้างและจัดการตำแหน่งงานว่าง, บันทึกการมาทำงานของผู้ถูกคุมประพฤติ และส่งผลประเมินการทำงานกลับกรมโดยตรง
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Instructions on how the user can replace the video file later */}
-                <div className="bg-amber-50/70 border border-amber-200/60 rounded-2xl p-4 flex items-start space-x-3 text-xs text-amber-900">
-                  <Info className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
-                  <div className="space-y-1">
-                    <span className="font-bold block text-[13px]">💡 คำแนะนำในการเปลี่ยนไฟล์วิดีโอ (สำหรับผู้พัฒนา)</span>
-                    <p className="leading-relaxed font-medium">
-                      หากวิดีโอแนะนำตัวเต็มของคุณพร้อมใช้งานแล้ว คุณสามารถนำไฟล์วิดีโอจริงที่มีนามสกุล <code className="bg-white px-1.5 py-0.5 border border-amber-200 rounded font-mono text-[11px]">.mp4</code> มาเปลี่ยนชื่อไฟล์เป็น <strong className="font-bold font-mono">intro_video.mp4</strong> แล้วทำการอัปโหลดไฟล์ไปแทนที่ไฟล์เดิมในโฟลเดอร์ <code className="bg-white px-1.5 py-0.5 border border-amber-200 rounded font-mono text-[11px]">/src/assets/videos/</code> ได้ทันที ระบบจะทำการโหลดและเล่นวิดีโอของคุณใหม่อัตโนมัติโดยไม่ต้องแก้โค้ดเพิ่มเติม
-                    </p>
-                  </div>
-                </div>
-
-              </div>
-
-              {/* Action Footer */}
-              <div className="bg-slate-50 px-5 md:px-6 py-4 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4 shrink-0">
-                {/* Keep shown checkbox */}
-                <label className="relative flex items-center cursor-pointer select-none">
-                  <input
-                    type="checkbox"
-                    checked={dontShowIntroAgain}
-                    onChange={(e) => setDontShowIntroAgain(e.target.checked)}
-                    className="sr-only peer"
-                  />
-                  <div className="w-5 h-5 bg-white border border-slate-300 rounded-md peer-checked:bg-blue-600 peer-checked:border-blue-600 transition-all flex items-center justify-center shadow-xs">
-                    <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 text-white stroke-3 fill-none stroke-current" style={{ display: dontShowIntroAgain ? "block" : "none" }}>
-                      <polyline points="20 6 9 17 4 12" />
-                    </svg>
-                  </div>
-                  <span className="ml-2.5 text-xs font-bold text-slate-600">
-                    ไม่ต้องแสดงหน้าจอนี้อีกในการเข้าเว็บครั้งถัดไป
-                  </span>
-                </label>
-
-                {/* Buttons */}
-                <div className="flex items-center space-x-3 shrink-0 w-full sm:w-auto">
-                  <button
-                    onClick={handleCloseIntroVideo}
-                    className="flex-1 sm:flex-initial px-4 py-2 text-xs font-bold border border-slate-200 hover:border-slate-300 rounded-xl bg-white text-slate-700 hover:bg-slate-50 transition-all cursor-pointer text-center"
-                  >
-                    ปิดวิดีโอ
-                  </button>
-                  <button
-                    onClick={handleCloseIntroVideo}
-                    className="flex-1 sm:flex-initial px-6 py-2.5 text-xs font-bold rounded-xl bg-blue-600 hover:bg-blue-700 text-white shadow-md shadow-blue-600/10 hover:shadow-lg hover:shadow-blue-600/20 active:scale-98 transition-all cursor-pointer flex items-center justify-center space-x-1.5"
-                  >
-                    <span>เข้าสู่หน้าหลักของระบบ</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
+              {/* Close and Enter button */}
+              <button
+                onClick={handleCloseIntroVideo}
+                className="px-6 py-2.5 rounded-full bg-white text-slate-900 hover:bg-slate-100 font-sans text-xs tracking-wide font-bold transition-all shadow-lg shadow-white/5 cursor-pointer active:scale-98"
+              >
+                เข้าสู่หน้าแรกระบบ
+              </button>
             </motion.div>
           </motion.div>
         )}
