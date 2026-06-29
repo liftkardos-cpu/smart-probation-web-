@@ -41,7 +41,13 @@ import {
   ChevronUp,
   Info,
   ArrowRight,
-  Shield
+  Shield,
+  Play,
+  Film,
+  Volume2,
+  VolumeX,
+  Video,
+  PlayCircle
 } from "lucide-react";
 
 export const LoginView: React.FC = () => {
@@ -55,6 +61,14 @@ export const LoginView: React.FC = () => {
   const [rememberMe, setRememberMe] = useState(true);
   const [isDemoOpen, setIsDemoOpen] = useState(true);
   const [isManualOpen, setIsManualOpen] = useState(false);
+  const [isVideoPromoOpen, setIsVideoPromoOpen] = useState(() => {
+    return !sessionStorage.getItem("dismissed_video_promo");
+  });
+  const [promoVideoUrl, setPromoVideoUrl] = useState(() => {
+    return localStorage.getItem("promo_video_url") || "https://assets.mixkit.co/videos/preview/mixkit-abstract-digital-technology-background-40003-large.mp4";
+  });
+  const [isUrlEditing, setIsUrlEditing] = useState(false);
+  const [tempVideoUrl, setTempVideoUrl] = useState("");
   const [manualActiveTab, setManualActiveTab] = useState<"probationer" | "officer" | "partner" | "faq">("probationer");
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
 
@@ -783,8 +797,8 @@ export const LoginView: React.FC = () => {
                 </button>
               </div>
 
-              {/* Bottom user manual link */}
-              <div className="pt-2 flex justify-center">
+              {/* Bottom user manual & presentation video links */}
+              <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
                 <button
                   type="button"
                   id="btn-user-manual"
@@ -793,6 +807,21 @@ export const LoginView: React.FC = () => {
                 >
                   <BookOpen className="w-4 h-4 text-slate-400" />
                   <span>คู่มือการใช้งานระบบ</span>
+                </button>
+
+                <div className="w-1 h-1 rounded-full bg-slate-300" />
+
+                <button
+                  type="button"
+                  id="btn-video-promo"
+                  onClick={() => {
+                    setTempVideoUrl(promoVideoUrl);
+                    setIsVideoPromoOpen(true);
+                  }}
+                  className="text-xs font-extrabold text-blue-700 hover:text-blue-800 flex items-center space-x-1.5 transition-all cursor-pointer bg-blue-50 hover:bg-blue-100/80 px-3.5 py-1.5 rounded-full border border-blue-100/50 hover:scale-105 active:scale-95"
+                >
+                  <PlayCircle className="w-4 h-4 text-blue-600 fill-blue-50/10" />
+                  <span>วีดีโอนำเสนอโครงการ (VDO)</span>
                 </button>
               </div>
 
@@ -983,6 +1012,222 @@ export const LoginView: React.FC = () => {
 
         </div>
       </div>
+
+      {/* =============================================================
+          PROJECT PRESENTATION VIDEO MODAL (WELCOME PROMO VDO)
+          ============================================================= */}
+      <AnimatePresence>
+        {isVideoPromoOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-slate-950/85 backdrop-blur-lg z-[160] flex items-center justify-center p-4 md:p-6"
+          >
+            <motion.div
+              initial={{ scale: 0.92, y: 30 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.92, y: 30 }}
+              transition={{ type: "spring", duration: 0.5 }}
+              className="bg-slate-950/90 text-white rounded-3xl shadow-2xl border border-slate-800/80 max-w-5xl w-full overflow-hidden flex flex-col lg:flex-row max-h-[90vh] md:max-h-[85vh]"
+            >
+              
+              {/* Left Column: Premium Responsive Video Player */}
+              <div className="lg:w-3/5 bg-black flex flex-col justify-between relative min-h-[220px] md:min-h-[350px] border-b lg:border-b-0 lg:border-r border-slate-800/80">
+                <div className="absolute top-4 left-4 z-20 flex items-center space-x-2">
+                  <span className="bg-blue-600/95 text-white font-mono text-[10px] font-bold px-2.5 py-0.5 rounded-full tracking-wider shadow-sm flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-ping" />
+                    LIVE PRESENTATION
+                  </span>
+                </div>
+
+                {/* The actual HTML5 Video Element with fully responsive container */}
+                <div className="flex-1 flex items-center justify-center relative bg-slate-950 group">
+                  <video
+                    key={promoVideoUrl}
+                    className="w-full h-full object-contain"
+                    controls
+                    autoPlay
+                    loop
+                    playsInline
+                    src={promoVideoUrl}
+                  />
+                  
+                  {/* Watermark / Play Info Overlay */}
+                  <div className="absolute bottom-4 right-4 bg-slate-900/80 backdrop-blur-xs text-[10px] font-mono text-slate-400 px-2.5 py-1 rounded-md border border-slate-800 pointer-events-none">
+                    Preview Mode (Placeholder VDO)
+                  </div>
+                </div>
+
+                {/* Developer Video URL Controller directly in UI for flexibility */}
+                <div className="bg-slate-900 p-4 border-t border-slate-800/80 text-xs">
+                  {!isUrlEditing ? (
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-1.5 truncate text-slate-400">
+                        <Video className="w-3.5 h-3.5 text-blue-400 shrink-0" />
+                        <span className="truncate">ลิงก์วิดีโอ: <span className="font-mono text-[11px] text-slate-300">{promoVideoUrl}</span></span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setTempVideoUrl(promoVideoUrl);
+                          setIsUrlEditing(true);
+                        }}
+                        className="text-[11px] font-extrabold text-blue-400 hover:text-blue-300 ml-2 shrink-0 underline cursor-pointer"
+                      >
+                        เปลี่ยนไฟล์วิดีโอ
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="space-y-2">
+                      <div className="text-[11px] font-bold text-blue-400">วางลิงก์วิดีโอใหม่ (.mp4 หรือลิงก์วิดีโออื่น):</div>
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="text"
+                          value={tempVideoUrl}
+                          onChange={(e) => setTempVideoUrl(e.target.value)}
+                          placeholder="วางลิงก์วิดีโอ MP4 เช่น https://domain/video.mp4"
+                          className="flex-1 bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1 text-xs font-mono text-slate-200 focus:outline-hidden focus:border-blue-500"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => {
+                            if (tempVideoUrl.trim()) {
+                              setPromoVideoUrl(tempVideoUrl.trim());
+                              localStorage.setItem("promo_video_url", tempVideoUrl.trim());
+                              addNotification("อัปเดตวิดีโอสำเร็จ", "ลิงก์วิดีโอนำเสนอโครงการได้รับการบันทึกแล้ว", "ระบบ");
+                            }
+                            setIsUrlEditing(false);
+                          }}
+                          className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-3 py-1 rounded-lg shrink-0 cursor-pointer text-xs"
+                        >
+                          บันทึก
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setIsUrlEditing(false)}
+                          className="bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold px-3 py-1 rounded-lg shrink-0 cursor-pointer text-xs"
+                        >
+                          ยกเลิก
+                        </button>
+                      </div>
+                      <p className="text-[10px] text-slate-500 font-semibold">
+                        * สามารถใส่ path ตรงๆ เช่น <code className="font-mono bg-slate-950 text-slate-300 px-1 rounded">/src/assets/video_name.mp4</code> เมื่ออัปโหลดไฟล์วิดีโอเข้ามาในโปรเจกต์แล้ว
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+              </div>
+
+              {/* Right Column: Project Showcase, Features and Developers */}
+              <div className="lg:w-2/5 p-6 md:p-8 flex flex-col justify-between overflow-y-auto max-h-[45vh] lg:max-h-none">
+                
+                {/* Header Title */}
+                <div className="space-y-3">
+                  <div className="flex items-center space-x-2.5">
+                    <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-700 flex items-center justify-center border border-blue-500/30">
+                      <img
+                        src={progressAppIcon}
+                        alt="PROGRESS+"
+                        className="w-full h-full object-cover rounded-xl"
+                        referrerPolicy="no-referrer"
+                      />
+                    </div>
+                    <div>
+                      <span className="text-[9px] bg-amber-500/10 border border-amber-500/20 text-[#cca43b] px-2 py-0.5 rounded-full font-bold tracking-wider uppercase">INNOVATION HUB</span>
+                      <h3 className="text-xl font-black tracking-tight mt-0.5 text-white">PROGRESS+</h3>
+                    </div>
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <h4 className="text-base font-bold text-blue-400">ระบบนิเวศอัจฉริยะคุมประพฤติเพื่ออนาคต</h4>
+                    <p className="text-xs text-slate-400 font-semibold leading-relaxed">
+                      ขอต้อนรับเข้าสู่นวัตกรรมระบบสนับสนุนการรายงานตัว คุมประพฤติ และส่งเสริมอาชีพผู้เคยกระทำผิดอย่างมีประสิทธิภาพระดับประเทศ
+                    </p>
+                  </div>
+
+                  <div className="h-px bg-slate-800/80 my-4" />
+
+                  {/* Highlights Grid */}
+                  <div className="space-y-2.5">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block">ไฮไลต์นวัตกรรมเด่น</span>
+                    
+                    <div className="grid grid-cols-1 gap-2">
+                      <div className="bg-slate-900/60 p-2.5 rounded-xl border border-slate-800 flex items-start space-x-2.5">
+                        <div className="p-1 rounded-lg bg-blue-500/10 text-blue-400 shrink-0 mt-0.5">
+                          <Sparkles className="w-3.5 h-3.5" />
+                        </div>
+                        <div>
+                          <h5 className="text-[11px] font-black text-slate-200">1. ผู้ช่วยอัจฉริยะ P+ AI Assistant</h5>
+                          <p className="text-[9px] text-slate-400 font-medium leading-normal">เทคโนโลยีโมเดลประมวลผลภาษา คุยตอบคำถาม แนะนำสายงานและกิจกรรมฟื้นฟูตลอด 24 ชั่วโมง</p>
+                        </div>
+                      </div>
+
+                      <div className="bg-slate-900/60 p-2.5 rounded-xl border border-slate-800 flex items-start space-x-2.5">
+                        <div className="p-1 rounded-lg bg-amber-500/10 text-amber-400 shrink-0 mt-0.5">
+                          <ClipboardCheck className="w-3.5 h-3.5" />
+                        </div>
+                        <div>
+                          <h5 className="text-[11px] font-black text-slate-200">2. การรายงานตัวอัจฉริยะ & พฤติกรรมคะแนน</h5>
+                          <p className="text-[9px] text-slate-400 font-medium leading-normal">บันทึกตำแหน่งพิกัด GPS อัตโนมัติ ป้องกันข้อมูลเท็จ พร้อมคำนวณเกรดความประพฤติโปร่งใส</p>
+                        </div>
+                      </div>
+
+                      <div className="bg-slate-900/60 p-2.5 rounded-xl border border-slate-800 flex items-start space-x-2.5">
+                        <div className="p-1 rounded-lg bg-emerald-500/10 text-emerald-400 shrink-0 mt-0.5">
+                          <Briefcase className="w-3.5 h-3.5" />
+                        </div>
+                        <div>
+                          <h5 className="text-[11px] font-black text-slate-200">3. คลังสมัครงานภาคี ReStart Job Hub</h5>
+                          <p className="text-[9px] text-slate-400 font-medium leading-normal">เชื่อมต่อตำแหน่งงานตรงจากผู้ประกอบการใจดี และเทศบาลนครหาดใหญ่ เพื่อสร้างอาชีพมีสุข</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Developers and Closure buttons */}
+                <div className="pt-6 mt-6 border-t border-slate-800/80 space-y-4">
+                  <div className="bg-slate-950/80 p-2.5 rounded-xl border border-slate-900 flex items-center justify-between">
+                    <div className="flex items-center space-x-2.5">
+                      <div className="w-8 h-8 rounded-lg bg-slate-800 border border-slate-700 flex items-center justify-center font-black text-blue-400 text-xs font-mono">
+                        TSU
+                      </div>
+                      <div className="text-left leading-none">
+                        <span className="text-[9px] text-slate-500 block font-semibold">คณะผู้จัดทำโครงการ</span>
+                        <span className="text-[11px] text-slate-300 font-black font-sans">วิทยาลัยการจัดการเพื่อการพัฒนา มรภ.ทักษิณ</span>
+                      </div>
+                    </div>
+                    <div className="flex -space-x-2">
+                      <div className="w-6 h-6 rounded-full bg-amber-500 border border-slate-950 flex items-center justify-center font-bold text-[8px] text-slate-950">เอก</div>
+                      <div className="w-6 h-6 rounded-full bg-purple-500 border border-slate-950 flex items-center justify-center font-bold text-[8px] text-white">ชล</div>
+                      <div className="w-6 h-6 rounded-full bg-emerald-500 border border-slate-950 flex items-center justify-center font-bold text-[8px] text-white">ณัจ</div>
+                    </div>
+                  </div>
+
+                  {/* Actions buttons */}
+                  <div className="flex gap-2">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        sessionStorage.setItem("dismissed_video_promo", "true");
+                        setIsVideoPromoOpen(false);
+                      }}
+                      className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-black py-2.5 px-4 rounded-xl text-xs shadow-md shadow-blue-900/20 active:scale-98 transition-all flex items-center justify-center space-x-1.5 cursor-pointer border border-blue-500/20"
+                    >
+                      <span>เข้าสู่เว็บไซต์หลัก</span>
+                      <ArrowRight className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+
+              </div>
+
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* =============================================================
           INTERACTIVE USER MANUAL MODAL (PROGRESS+ SYSTEM MANUAL)
