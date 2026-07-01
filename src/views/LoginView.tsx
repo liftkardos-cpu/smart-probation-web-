@@ -57,17 +57,44 @@ const YOUTUBE_VIDEO_URL_OR_ID = "https://youtu.be/X1QzdgmNyYQ$0";
 const getYouTubeEmbedUrl = (urlOrId: string) => {
   if (!urlOrId) return "";
   const trimmed = urlOrId.trim();
-  // ตรวจสอบว่าเป็นเฉพาะไอดีวิดีโอ 11 หลักหรือไม่
+  
+  // ตรวจสอบว่าเป็นเฉพาะไอดีวิดีโอ 11 หลักเดี่ยวๆ หรือไม่
   if (/^[a-zA-Z0-9_-]{11}$/.test(trimmed)) {
     return `https://www.youtube.com/embed/${trimmed}?autoplay=1&mute=1&loop=1&playlist=${trimmed}`;
   }
-  // ถอดรหัสหา ID จาก URL ในรูปแบบต่างๆ
-  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-  const match = trimmed.match(regExp);
-  const videoId = (match && match[2].length === 11) ? match[2] : "";
+
+  let videoId = "";
+
+  // 1. ตรวจสอบรูปแบบ short URL เช่น youtu.be/X1QzdgmNyYQ$0 หรือ youtu.be/X1QzdgmNyYQ
+  const shortMatch = trimmed.match(/youtu\.be\/([a-zA-Z0-9_-]{11})/);
+  if (shortMatch) {
+    videoId = shortMatch[1];
+  } else {
+    // 2. ตรวจสอบรูปแบบ watch?v= หรือ embed/ หรือ v/
+    const longMatch = trimmed.match(/(?:v=|\/embed\/|\/v\/|watch\?v=)([a-zA-Z0-9_-]{11})/);
+    if (longMatch) {
+      videoId = longMatch[1];
+    } else {
+      // 3. รูปแบบครอบจักรวาล หาตัวอักษร 11 ตัวที่ต่อจากเครื่องหมาย / หรือ =
+      const fallbackMatch = trimmed.match(/[\/=]([a-zA-Z0-9_-]{11})/);
+      if (fallbackMatch) {
+        videoId = fallbackMatch[1];
+      }
+    }
+  }
+
+  // หากตรวจพบ Video ID ให้ทำการสร้าง Embed Link สำหรับ YouTube ในรูปแบบที่เล่นอัตโนมัติ วนซ้ำ และปิดเสียงเริ่มต้น
   if (videoId) {
     return `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}`;
   }
+
+  // ตัวเลือกสำรองสุดท้าย: ดึงเอากลุ่มตัวอักษร 11 ตัวใดๆ ที่เจอใน URL
+  const anyIdMatch = trimmed.match(/([a-zA-Z0-9_-]{11})/);
+  if (anyIdMatch) {
+    const fallbackId = anyIdMatch[1];
+    return `https://www.youtube.com/embed/${fallbackId}?autoplay=1&mute=1&loop=1&playlist=${fallbackId}`;
+  }
+
   return trimmed;
 };
 
