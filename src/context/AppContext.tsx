@@ -82,6 +82,7 @@ interface AppContextProps {
   clearNotifications: () => void;
   clearAllNotifications: () => void;
   sendChatMessage: (message: string) => Promise<void>;
+  clearChatHistory: () => void;
   resetPrototypeData: () => void;
   addEmergencyRequest: (reason: string, details: string, lat: number, lng: number) => void;
   updateEmergencyRequestStatus: (id: string, status: EmergencyRequest["status"]) => void;
@@ -553,10 +554,34 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setRoleState(newRole);
     if (newRole === "PROBATIONER") {
       setCurrentViewState("DASHBOARD");
+      setChatHistory([
+        {
+          id: "welcome",
+          role: "model",
+          text: "สวัสดีครับคุณสมชาย ยินดีต้อนรับสู่ผู้ช่วยอัจฉริยะ (PROGRESS+ AI Assistant) สำหรับช่วยเหลือ แนะนำข้อมูลการปฏิบัติตน ตรวจสอบวันรายงานตัว ชั่วโมงบริการสังคม หรือข้อมูลตำแหน่งงานในระบบค่ะ มีเรื่องอะไรให้หนูช่วยไหมคะ?",
+          timestamp: new Date()
+        }
+      ]);
     } else if (newRole === "OFFICER") {
       setCurrentViewState("OFFICER_DASHBOARD");
+      setChatHistory([
+        {
+          id: "welcome",
+          role: "model",
+          text: "สวัสดีครับคุณเจ้าหน้าที่ ณัฐพงษ์ ยินดีต้อนรับสู่ผู้ช่วยอัจฉริยะ (PROGRESS+ AI Assistant สำหรับเจ้าหน้าที่) เพื่อช่วยเหลือให้คำแนะนำเกี่ยวกับเกณฑ์การประเมินความเสี่ยง แผนการฟื้นฟู การติดตามการรายงานตัว หรือระเบียบกฎหมายคุมประพฤติ พ.ศ. 2562 มีคดีหรือคำถามใดที่ให้ผมช่วยเหลือไหมครับ?",
+          timestamp: new Date()
+        }
+      ]);
     } else if (newRole === "PARTNER") {
       setCurrentViewState("PARTNER_DASHBOARD");
+      setChatHistory([
+        {
+          id: "welcome",
+          role: "model",
+          text: "สวัสดีค่ะผู้แทนหน่วยงานภาคี (เทศบาลนครหาดใหญ่) ยินดีต้อนรับสู่ผู้ช่วยอัจฉริยะ (PROGRESS+ AI Partner Assistant) เพื่อช่วยเหลือด้านการวางแผนกิจกรรมบริการสังคม คัดเลือกผู้ถูกคุมประพฤติเข้าทำกิจกรรม หรือให้ข้อมูลสิทธิประโยชน์ทางภาษีและการลดหย่อน มีข้อมูลหรือหลักเกณฑ์ใดที่ต้องการให้ค้นหาไหมคะ?",
+          timestamp: new Date()
+        }
+      ]);
     }
   };
 
@@ -993,6 +1018,37 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   // 10. AI Chatbot
+  const clearChatHistory = () => {
+    if (role === "PROBATIONER") {
+      setChatHistory([
+        {
+          id: "welcome",
+          role: "model",
+          text: "สวัสดีครับคุณสมชาย ยินดีต้อนรับสู่ผู้ช่วยอัจฉริยะ (PROGRESS+ AI Assistant) สำหรับช่วยเหลือ แนะนำข้อมูลการปฏิบัติตน ตรวจสอบวันรายงานตัว ชั่วโมงบริการสังคม หรือข้อมูลตำแหน่งงานในระบบค่ะ มีเรื่องอะไรให้หนูช่วยไหมคะ?",
+          timestamp: new Date()
+        }
+      ]);
+    } else if (role === "OFFICER") {
+      setChatHistory([
+        {
+          id: "welcome",
+          role: "model",
+          text: "สวัสดีครับคุณเจ้าหน้าที่ ณัฐพงษ์ ยินดีต้อนรับสู่ผู้ช่วยอัจฉริยะ (PROGRESS+ AI Assistant สำหรับเจ้าหน้าที่) เพื่อช่วยเหลือให้คำแนะนำเกี่ยวกับเกณฑ์การประเมินความเสี่ยง แผนการฟื้นฟู การติดตามการรายงานตัว หรือระเบียบกฎหมายคุมประพฤติ พ.ศ. 2562 มีคดีหรือคำถามใดที่ให้ผมช่วยเหลือไหมครับ?",
+          timestamp: new Date()
+        }
+      ]);
+    } else if (role === "PARTNER") {
+      setChatHistory([
+        {
+          id: "welcome",
+          role: "model",
+          text: "สวัสดีค่ะผู้แทนหน่วยงานภาคี (เทศบาลนครหาดใหญ่) ยินดีต้อนรับสู่ผู้ช่วยอัจฉริยะ (PROGRESS+ AI Partner Assistant) เพื่อช่วยเหลือด้านการวางแผนกิจกรรมบริการสังคม คัดเลือกผู้ถูกคุมประพฤติเข้าทำกิจกรรม หรือให้ข้อมูลสิทธิประโยชน์ทางภาษีและการลดหย่อน มีข้อมูลหรือหลักเกณฑ์ใดที่ต้องการให้ค้นหาไหมคะ?",
+          timestamp: new Date()
+        }
+      ]);
+    }
+  };
+
   const sendChatMessage = async (msgText: string) => {
     const userMsg: ChatMessage = {
       id: `user-${Date.now()}`,
@@ -1004,15 +1060,19 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setChatHistory(prev => [...prev, userMsg]);
 
     try {
+      const isOfficer = role === "OFFICER";
+      const targetProfile = isOfficer ? (probationers.find(p => p.id === selectedProbationerId) || probationers[0]) : probationerProfile;
+
       // Build context payload
       const payloadContext = {
-        name: probationerProfile.name,
-        id: probationerProfile.id,
-        status: probationerProfile.status,
-        completedHours: probationerProfile.completedHours,
-        requiredHours: probationerProfile.requiredHours,
+        userRole: role,
+        name: targetProfile?.name,
+        id: targetProfile?.id,
+        status: targetProfile?.status,
+        completedHours: targetProfile?.completedHours,
+        requiredHours: targetProfile?.requiredHours,
         nextReportDate: "20 พฤษภาคม 2570 เวลา 08:30 น.",
-        behaviorScore: probationerProfile.behaviorScore,
+        behaviorScore: targetProfile?.behaviorScore,
         currentView: currentView
       };
 
@@ -1122,6 +1182,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         clearNotifications,
         clearAllNotifications,
         sendChatMessage,
+        clearChatHistory,
         resetPrototypeData,
         addEmergencyRequest,
         updateEmergencyRequestStatus,

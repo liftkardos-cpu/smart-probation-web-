@@ -64,6 +64,7 @@ export const Sidebar: React.FC<{ onClose?: () => void; className?: string }> = (
           { id: "ANALYTICS", label: "รายงาน", icon: FileText },
           { id: "REHABILITATION_PLAN", label: "แผนการแก้ไขฟื้นฟู", icon: Compass },
           { id: "HEAT_MAP", label: "ข้อมูลพื้นที่ (Heat Map)", icon: Map },
+          { id: "AI_ASSISTANT", label: "AI ตอบคำถาม (P+)", icon: Bot },
           { id: "SETTINGS", label: "ตั้งค่า", icon: Settings }
         ];
       case "PARTNER":
@@ -75,6 +76,7 @@ export const Sidebar: React.FC<{ onClose?: () => void; className?: string }> = (
           { id: "SERVICE_HOURS", label: "ชั่วโมงบริการสังคม", icon: Clock },
           { id: "REPORTS_STATS", label: "รายงานและสถิติ", icon: FileText },
           { id: "DOCUMENTS_ANNOUNCEMENTS", label: "เอกสารและประกาศ", icon: FolderOpen },
+          { id: "AI_ASSISTANT", label: "AI ตอบคำถาม (P+)", icon: Bot },
           { id: "NOTIFICATIONS", label: "ข้อความแจ้งเตือน", icon: Bell, badge: 3 },
           { id: "SETTINGS", label: "ตั้งค่า", icon: Settings }
         ];

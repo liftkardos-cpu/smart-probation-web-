@@ -9,7 +9,8 @@
 //   - รายการคดีความเคลื่อนไหวล่าสุดและการแจ้งเตือนสำคัญ (Recent Activities & Key Alerts)
 // ==========================================
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import L from "leaflet";
 import { useApp } from "../../context/AppContext";
 import { 
   Users, 
@@ -43,6 +44,72 @@ export const OfficerDashboard: React.FC = () => {
   const { currentView, setCurrentView, emergencyRequests, updateEmergencyRequestStatus, probationers } = useApp();
   const [fiscalYear, setFiscalYear] = useState("ปีงบประมาณ 2567");
   const [notifiedCases, setNotifiedCases] = useState<string[]>([]);
+
+  const dashboardMapContainerRef = useRef<HTMLDivElement>(null);
+  const dashboardMapRef = useRef<L.Map | null>(null);
+
+  useEffect(() => {
+    if (!dashboardMapContainerRef.current) return;
+    if (dashboardMapRef.current) return; // Prevent double-initialization
+
+    // Initialize Map centered on Thailand
+    const map = L.map(dashboardMapContainerRef.current, {
+      center: [13.4, 100.8],
+      zoom: 5,
+      zoomControl: false,
+      minZoom: 4,
+      maxZoom: 14,
+    });
+
+    // Add CartoDB tile layer
+    L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
+      attribution: '&copy; OpenStreetMap &copy; CARTO',
+      subdomains: 'abcd',
+      maxZoom: 20
+    }).addTo(map);
+
+    dashboardMapRef.current = map;
+
+    // High-risk areas to match the sidebar list
+    const points = [
+      { id: "bkk", name: "กรุงเทพมหานคร", coords: [13.7563, 100.5018], cases: "1,246 คน", pulseClass: "pulse-marker-red", color: "#EF4444" },
+      { id: "non", name: "นนทบุรี", coords: [13.8591, 100.4908], cases: "892 คน", pulseClass: "pulse-marker-blue", color: "#3B82F6" },
+      { id: "samut", name: "สมุทรปราการ", coords: [13.5991, 100.5968], cases: "745 คน", pulseClass: "pulse-marker-yellow", color: "#EAB308" },
+      { id: "chon", name: "ชลบุรี", coords: [13.3611, 100.9847], cases: "623 คน", pulseClass: "pulse-marker-emerald", color: "#10B981" },
+      { id: "song", name: "สงขลา", coords: [7.1898, 100.5954], cases: "512 คน", pulseClass: "pulse-marker-purple", color: "#8B5CF6" },
+    ];
+
+    points.forEach(p => {
+      const icon = L.divIcon({
+        className: "custom-div-icon",
+        html: `<div class="${p.pulseClass}"></div>`,
+        iconSize: [20, 20],
+        iconAnchor: [10, 10]
+      });
+
+      const marker = L.marker(p.coords as L.LatLngExpression, { icon }).addTo(map);
+      marker.bindPopup(`
+        <div class="p-1 font-sans text-slate-900 text-[11px] leading-relaxed">
+          <p class="font-extrabold flex items-center gap-1 text-[#0f2d59] text-xs">
+            <span class="w-2.5 h-2.5 rounded-full inline-block" style="background-color: ${p.color}"></span>
+            ${p.name}
+          </p>
+          <p class="text-[10px] text-slate-500 mt-1 font-bold">จำนวนผู้คุมประพฤติ: <span class="text-blue-600 font-black">${p.cases}</span></p>
+        </div>
+      `, {
+        closeButton: false,
+        offset: L.point(0, -5)
+      });
+    });
+
+    // Cleanup on unmount
+    return () => {
+      if (dashboardMapRef.current) {
+        dashboardMapRef.current.remove();
+        dashboardMapRef.current = null;
+      }
+    };
+  }, []);
 
   const handleSendAlert = (caseId: string) => {
     setNotifiedCases(prev => [...prev, caseId]);
@@ -268,25 +335,196 @@ export const OfficerDashboard: React.FC = () => {
 
         {/* Heat Map of Risk areas (5 columns on desktop) */}
         <div className="lg:col-span-5 bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex flex-col justify-between">
+          {/* Styles Injection for pulsing markers & Leaflet popups */}
+          <link
+            rel="stylesheet"
+            href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+            integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+            crossOrigin=""
+          />
+          <style>{`
+            .pulse-marker-red {
+              position: relative;
+              width: 14px;
+              height: 14px;
+            }
+            .pulse-marker-red::before {
+              content: '';
+              position: absolute;
+              top: -13px;
+              left: -13px;
+              width: 40px;
+              height: 40px;
+              border-radius: 50%;
+              background-color: rgba(239, 68, 68, 0.5);
+              animation: pulse-ring-anim 1.6s cubic-bezier(0.215, 0.610, 0.355, 1) infinite;
+            }
+            .pulse-marker-red::after {
+              content: '';
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 14px;
+              height: 14px;
+              border-radius: 50%;
+              background-color: #ef4444;
+              border: 2.5px solid white;
+              box-shadow: 0 0 10px rgba(239, 68, 68, 0.9);
+              animation: pulse-dot-anim 1.6s cubic-bezier(0.455, 0.030, 0.515, 0.955) -0.4s infinite;
+            }
+
+            .pulse-marker-blue {
+              position: relative;
+              width: 14px;
+              height: 14px;
+            }
+            .pulse-marker-blue::before {
+              content: '';
+              position: absolute;
+              top: -13px;
+              left: -13px;
+              width: 40px;
+              height: 40px;
+              border-radius: 50%;
+              background-color: rgba(59, 130, 246, 0.5);
+              animation: pulse-ring-anim 1.6s cubic-bezier(0.215, 0.610, 0.355, 1) infinite;
+            }
+            .pulse-marker-blue::after {
+              content: '';
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 14px;
+              height: 14px;
+              border-radius: 50%;
+              background-color: #3b82f6;
+              border: 2.5px solid white;
+              box-shadow: 0 0 10px rgba(59, 130, 246, 0.9);
+              animation: pulse-dot-anim 1.6s cubic-bezier(0.455, 0.030, 0.515, 0.955) -0.4s infinite;
+            }
+
+            .pulse-marker-yellow {
+              position: relative;
+              width: 14px;
+              height: 14px;
+            }
+            .pulse-marker-yellow::before {
+              content: '';
+              position: absolute;
+              top: -13px;
+              left: -13px;
+              width: 40px;
+              height: 40px;
+              border-radius: 50%;
+              background-color: rgba(234, 179, 8, 0.5);
+              animation: pulse-ring-anim 1.6s cubic-bezier(0.215, 0.610, 0.355, 1) infinite;
+            }
+            .pulse-marker-yellow::after {
+              content: '';
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 14px;
+              height: 14px;
+              border-radius: 50%;
+              background-color: #eab308;
+              border: 2.5px solid white;
+              box-shadow: 0 0 10px rgba(234, 179, 8, 0.9);
+              animation: pulse-dot-anim 1.6s cubic-bezier(0.455, 0.030, 0.515, 0.955) -0.4s infinite;
+            }
+
+            .pulse-marker-emerald {
+              position: relative;
+              width: 14px;
+              height: 14px;
+            }
+            .pulse-marker-emerald::before {
+              content: '';
+              position: absolute;
+              top: -13px;
+              left: -13px;
+              width: 40px;
+              height: 40px;
+              border-radius: 50%;
+              background-color: rgba(16, 185, 129, 0.5);
+              animation: pulse-ring-anim 1.6s cubic-bezier(0.215, 0.610, 0.355, 1) infinite;
+            }
+            .pulse-marker-emerald::after {
+              content: '';
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 14px;
+              height: 14px;
+              border-radius: 50%;
+              background-color: #10b981;
+              border: 2.5px solid white;
+              box-shadow: 0 0 10px rgba(16, 185, 129, 0.9);
+              animation: pulse-dot-anim 1.6s cubic-bezier(0.455, 0.030, 0.515, 0.955) -0.4s infinite;
+            }
+
+            .pulse-marker-purple {
+              position: relative;
+              width: 14px;
+              height: 14px;
+            }
+            .pulse-marker-purple::before {
+              content: '';
+              position: absolute;
+              top: -13px;
+              left: -13px;
+              width: 40px;
+              height: 40px;
+              border-radius: 50%;
+              background-color: rgba(139, 92, 246, 0.5);
+              animation: pulse-ring-anim 1.6s cubic-bezier(0.215, 0.610, 0.355, 1) infinite;
+            }
+            .pulse-marker-purple::after {
+              content: '';
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 14px;
+              height: 14px;
+              border-radius: 50%;
+              background-color: #8b5cf6;
+              border: 2.5px solid white;
+              box-shadow: 0 0 10px rgba(139, 92, 246, 0.9);
+              animation: pulse-dot-anim 1.6s cubic-bezier(0.455, 0.030, 0.515, 0.955) -0.4s infinite;
+            }
+
+            @keyframes pulse-ring-anim {
+              0% { transform: scale(0.25); opacity: 0.95; }
+              80%, 100% { transform: scale(1.3); opacity: 0; }
+            }
+            @keyframes pulse-dot-anim {
+              0% { transform: scale(0.8); }
+              50% { transform: scale(1.2); }
+              100% { transform: scale(0.8); }
+            }
+          `}</style>
+
           <div>
-            <h3 className="text-sm font-black text-[#0f2d59] mb-4">Heat Map พื้นที่เสี่ยง</h3>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-sm font-black text-[#0f2d59]">Heat Map พื้นที่เสี่ยง</h3>
+              <button
+                onClick={() => setCurrentView("HEAT_MAP")}
+                className="text-[10px] font-black text-[#1e40af] hover:text-blue-800 flex items-center gap-1 bg-blue-50 hover:bg-blue-100 px-2.5 py-1.5 rounded-xl transition-all cursor-pointer"
+              >
+                <span>ดูแบบเต็มจอ ➔</span>
+              </button>
+            </div>
             
             <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
-              {/* Map of Thailand Representation */}
-              <div className="md:col-span-7 flex justify-center py-2">
-                <svg viewBox="0 0 200 350" className="w-full max-w-[150px] drop-shadow-md">
-                  {/* Stylized shape of Thailand colored in regional risk gradients */}
-                  {/* North (Green/Yellow) */}
-                  <path d="M70,20 Q85,15 100,25 Q115,35 110,60 Q95,70 80,65 Q60,50 70,20 Z" fill="#67C23A" opacity="0.85" />
-                  {/* Northeast (Orange/Red) */}
-                  <path d="M110,60 Q130,50 160,65 Q180,85 175,120 Q160,140 130,135 Q110,120 110,60 Z" fill="#F56C6C" opacity="0.9" />
-                  {/* Central (Red - High Risk) */}
-                  <path d="M85,70 Q105,75 115,100 Q110,140 95,145 Q80,130 85,70 Z" fill="#E6A23C" opacity="0.9" />
-                  {/* East */}
-                  <path d="M110,140 Q135,145 140,165 Q125,185 110,175 Z" fill="#F56C6C" opacity="0.85" />
-                  {/* South (Green/Yellow) */}
-                  <path d="M85,145 Q95,150 90,180 L80,240 L85,290 L75,330 L65,310 L75,260 L75,200 L85,145 Z" fill="#409EFF" opacity="0.85" />
-                </svg>
+              {/* Map of Thailand Representation - Interactive Leaflet Map */}
+              <div className="md:col-span-7 relative w-full h-[280px] rounded-2xl overflow-hidden shadow-inner border border-slate-100 bg-slate-100">
+                <div 
+                  ref={dashboardMapContainerRef} 
+                  className="w-full h-full z-0 bg-slate-50"
+                />
+                <div className="absolute left-2.5 bottom-2.5 z-[1000] bg-slate-900/80 text-[8px] text-white px-2 py-1 rounded-md pointer-events-none font-bold">
+                  📍 แผนที่แบบโต้ตอบ
+                </div>
               </div>
 
               {/* Sidebar Listing of high risk zones */}

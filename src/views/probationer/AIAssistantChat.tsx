@@ -32,7 +32,7 @@ import {
 } from "lucide-react";
 
 export const AIAssistantChat: React.FC = () => {
-  const { chatHistory, sendChatMessage, probationerProfile, clearChatHistory } = useApp();
+  const { chatHistory, sendChatMessage, probationerProfile, clearChatHistory, role } = useApp();
   const [inputText, setInputText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
@@ -41,8 +41,13 @@ export const AIAssistantChat: React.FC = () => {
   const [speakingId, setSpeakingId] = useState<string | null>(null);
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
-  // Suggested quick prompts
-  const quickPrompts = [
+  // Suggested quick prompts based on user role
+  const quickPrompts = role === "OFFICER" ? [
+    "เกณฑ์การจัดชั้นความเสี่ยงผู้ถูกคุมประพฤติ",
+    "แนวทางบำบัดฟื้นฟูตามระบบ Matrix Program",
+    "ข้อบังคับการรายงานตัวและขั้นตอนสืบเสาะพฤติกรรม",
+    "หลักเกณฑ์การคำนวณและลดชั่วโมงบริการสังคม"
+  ] : [
     "เช็กวันรายงานตัวครั้งถัดไปและเงื่อนไขของฉัน",
     "ช่วยแนะนำงานฝึกวิชาชีพด้านช่างฝีมือเทคนิค",
     "เกณฑ์การประเมินคะแนนความประพฤติคืออะไร",
@@ -124,10 +129,13 @@ export const AIAssistantChat: React.FC = () => {
         <div>
           <h2 className="text-xl font-bold text-slate-800 flex items-center gap-2">
             <Sparkles className="w-5 h-5 text-[#cca43b] animate-pulse" />
-            <span>ถามตอบอัจฉริยะ PROGRESS+ (AI Assistant)</span>
+            <span>{role === "OFFICER" ? "ถามตอบอัจฉริยะ PROGRESS+ (สำหรับเจ้าหน้าที่)" : "ถามตอบอัจฉริยะ PROGRESS+ (AI Assistant)"}</span>
           </h2>
           <p className="text-xs text-slate-400 mt-1">
-            ปรึกษาสิทธิ์ รายงานตัว และการพัฒนาวินัยผ่านโมเดล Gemini อัจฉริยะ พร้อมระบบ Google Search ค้นหาข้อมูลกฎหมายแบบเรียลไทม์
+            {role === "OFFICER"
+              ? "สืบค้น พรบ.คุมประพฤติ ระเบียบปฏิบัติเกณฑ์วิเคราะห์คดีความเสี่ยง และช่วยประเมินการบำบัดผ่านโมเดล Gemini อัจฉรียะ"
+              : "ปรึกษาสิทธิ์ รายงานตัว และการพัฒนาวินัยผ่านโมเดล Gemini อัจฉริยะ พร้อมระบบ Google Search ค้นหาข้อมูลกฎหมายแบบเรียลไทม์"
+            }
           </p>
         </div>
         
@@ -162,9 +170,9 @@ export const AIAssistantChat: React.FC = () => {
               </div>
               <div>
                 <div className="flex items-center gap-1.5">
-                  <h4 className="text-xs font-black text-white">PROGRESS+ AI Assistant (P+)</h4>
+                  <h4 className="text-xs font-black text-white">{role === "OFFICER" ? "PROGRESS+ AI for Officers (P+)" : "PROGRESS+ AI Assistant (P+)"}</h4>
                   <span className="bg-[#cca43b]/20 text-[#cca43b] text-[8px] font-extrabold px-1.5 py-0.5 rounded border border-[#cca43b]/25">
-                    Premium Active
+                    {role === "OFFICER" ? "Officer Core Active" : "Premium Active"}
                   </span>
                 </div>
                 <p className="text-[10px] text-[#cca43b] font-bold flex items-center gap-1">
@@ -387,7 +395,10 @@ export const AIAssistantChat: React.FC = () => {
                 type="text"
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}
-                placeholder="พิมพ์ถามข้อสงสัยเกณฑ์คุมประพฤติ, หลักสูตรเรียน, ขอเลื่อนนัด หรือคุยได้ทุกเรื่อง..."
+                placeholder={role === "OFFICER"
+                  ? "พิมพ์ถามเกณฑ์ดัชนีคุมประพฤติ, มาตรการลงโทษคดี, หรือข้อหารือการดูแลช่วยเหลือผู้ถูกคุมความประพฤติ..."
+                  : "พิมพ์ถามข้อสงสัยเกณฑ์คุมประพฤติ, หลักสูตรเรียน, ขอเลื่อนนัด หรือคุยได้ทุกเรื่อง..."
+                }
                 className="flex-1 px-4 py-3 border border-slate-300 rounded-2xl text-xs bg-slate-50 outline-none focus:bg-white focus:ring-2 focus:ring-[#cca43b]/40 focus:border-[#cca43b] text-slate-800 transition-all font-medium"
               />
               <button
@@ -412,11 +423,14 @@ export const AIAssistantChat: React.FC = () => {
               <div className="w-8 h-8 rounded-lg overflow-hidden border border-slate-200 flex-shrink-0">
                 <img src={progressBotAvatar} alt="P+" className="w-full h-full object-cover" />
               </div>
-              <h3 className="text-sm font-black text-slate-800">ขอบเขตเทคโนโลยีของ P+ AI</h3>
+              <h3 className="text-sm font-black text-slate-800">{role === "OFFICER" ? "ขอบเขตเทคโนโลยี P+ AI สำหรับเจ้าหน้าที่" : "ขอบเขตเทคโนโลยีของ P+ AI"}</h3>
             </div>
             
             <p className="text-xs text-slate-600 leading-relaxed font-medium">
-              นี่คือระบบผู้ช่วยอัจฉริยะที่ผสมผสานความแม่นยำด้านข้อมูลส่วนบุคคลของคุณเข้ากับระบบค้นหาระดับสากล:
+              {role === "OFFICER"
+                ? "ระบบผู้ช่วยอัจฉริยะที่เชื่อมโยงสารสนเทศพระราชบัญญัติคุมประพฤติ คู่มือการทำงาน และข้อมูลการบริหารคดีของท่าน:"
+                : "นี่คือระบบผู้ช่วยอัจฉริยะที่ผสมผสานความแม่นยำด้านข้อมูลส่วนบุคคลของคุณเข้ากับระบบค้นหาระดับสากล:"
+              }
             </p>
 
             <div className="space-y-4 text-xs text-slate-600 font-medium">
@@ -425,9 +439,14 @@ export const AIAssistantChat: React.FC = () => {
                   <Sparkles className="w-4 h-4" />
                 </div>
                 <div>
-                  <span className="font-extrabold block text-slate-800 text-[12px]">วิเคราะห์คดีและตารางเวลาส่วนตัว:</span>
+                  <span className="font-extrabold block text-slate-800 text-[12px]">
+                    {role === "OFFICER" ? "สืบค้นและวิเคราะห์แฟ้มประวัติคดี:" : "วิเคราะห์คดีและตารางเวลาส่วนตัว:"}
+                  </span>
                   <span className="text-[11px] text-slate-400 leading-relaxed block mt-0.5">
-                    ตรวจเช็ควันรายงานตัวคงเหลือ, ค้นหายอดชั่วโมงบำเพ็ญสาธารณประโยชน์ และระดับคะแนนวินัยพฤติกรรมสะสม
+                    {role === "OFFICER"
+                      ? "ตรวจเช็คสถานะรายงานตัว บันทึกคะแนนความประพฤติ และจำนวนชั่วโมงสะสมของผู้ถูกคุมประพฤติในคลังข้อมูลได้อย่างรวดเร็ว"
+                      : "ตรวจเช็ควันรายงานตัวคงเหลือ, ค้นหายอดชั่วโมงบำเพ็ญสาธารณประโยชน์ และระดับคะแนนวินัยพฤติกรรมสะสม"
+                    }
                   </span>
                 </div>
               </div>
@@ -439,7 +458,10 @@ export const AIAssistantChat: React.FC = () => {
                 <div>
                   <span className="font-extrabold block text-slate-800 text-[12px]">ระบบ Google Search Grounding:</span>
                   <span className="text-[11px] text-slate-400 leading-relaxed block mt-0.5">
-                    สามารถดึงหลักข้อมูลระเบียบกฎหมายกระทรวงยุติธรรม พระราชบัญญัติคุมประพฤติ พ.ศ. 2562 และข่าวสารสังคมแบบเรียลไทม์
+                    {role === "OFFICER"
+                      ? "ดึงข้อมูลจากราชกิจจานุเบกษา พรบ.คุมประพฤติ พ.ศ. 2562 กฎกระทรวงยุติธรรม และระเบียบกรมแบบเรียลไทม์"
+                      : "สามารถดึงหลักข้อมูลระเบียบกฎหมายกระทรวงยุติธรรม พระราชบัญญัติคุมประพฤติ พ.ศ. 2562 และข่าวสารสังคมแบบเรียลไทม์"
+                    }
                   </span>
                 </div>
               </div>
@@ -449,9 +471,12 @@ export const AIAssistantChat: React.FC = () => {
                   <Volume2 className="w-4 h-4" />
                 </div>
                 <div>
-                  <span className="font-extrabold block text-slate-800 text-[12px]">เสียงอ่านระบบอัจฉริยะ (TTS):</span>
+                  <span className="font-extrabold block text-slate-800 text-[12px]">ช่วยประเมินแผนงานและการฟื้นฟู:</span>
                   <span className="text-[11px] text-slate-400 leading-relaxed block mt-0.5">
-                    มีโหมดสังเคราะห์เสียงอ่านภาษาไทยที่เป็นมิตร เหมาะสำหรับผู้ถูกคุมประพฤติที่ต้องการฟังเสียงอธิบายเพื่อความสะดวก
+                    {role === "OFFICER"
+                      ? "แนะนำแนวทางประเมินความเสี่ยงต่อการกระทำผิดซ้ำ เกณฑ์โปรแกรมฟื้นฟู Matrix Program และขั้นตอนดูแลคดีเป็นพิเศษ"
+                      : "มีโหมดสังเคราะห์เสียงอ่านภาษาไทยที่เป็นมิตร เหมาะสำหรับผู้ถูกคุมประพฤติที่ต้องการฟังเสียงอธิบายเพื่อความสะดวก"
+                    }
                   </span>
                 </div>
               </div>

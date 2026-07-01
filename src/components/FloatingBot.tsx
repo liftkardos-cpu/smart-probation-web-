@@ -5,7 +5,7 @@ import progressBotAvatar from "../assets/images/progress_bot_avatar_178268480544
 import { MessageSquare, X, Sparkles } from "lucide-react";
 
 export const FloatingBot: React.FC = () => {
-  const { isLoggedIn, currentView, setCurrentView } = useApp();
+  const { isLoggedIn, currentView, setCurrentView, role } = useApp();
   const [showTooltip, setShowTooltip] = useState(false);
   const [isDismissed, setIsDismissed] = useState(false);
 
@@ -22,11 +22,21 @@ export const FloatingBot: React.FC = () => {
   }, [isLoggedIn, currentView, isDismissed]);
 
   // If the user is not logged in, or already in the AI Assistant view, hide the widget or keep it minimal
-  if (!isLoggedIn) return null;
+  if (!isLoggedIn || currentView === "AI_ASSISTANT") return null;
 
   const handleClick = () => {
     setCurrentView("AI_ASSISTANT");
     setShowTooltip(false);
+  };
+
+  const getGreetingText = () => {
+    if (role === "OFFICER") {
+      return "สวัสดีครับคุณเจ้าหน้าที่ ณัฐพงษ์! ปรึกษาวิเคราะห์ความเสี่ยง ตรวจสอบแฟ้มคดี หรือระบบบำบัด Matrix Program ได้ที่นี่ครับ";
+    }
+    if (role === "PARTNER") {
+      return "สวัสดีหน่วยงานภาคี! ค้นหาระเบียบการสะสมชั่วโมงผู้คุมความประพฤติ แนะนำกิจกรรมบริการสังคม หรือเช็กสิทธิประโยชน์ทางภาษีได้เลยครับ";
+    }
+    return "สวัสดีครับ! สงสัยเรื่องการรายงานตัวหรือชั่วโมงกิจกรรมอาสา ถามผมได้ตลอด 24 ชั่วโมงเลยครับ";
   };
 
   return (
@@ -61,7 +71,7 @@ export const FloatingBot: React.FC = () => {
               <span>AI Assistant (P+)</span>
             </div>
             <p className="text-slate-600 text-[11px] leading-relaxed pr-3">
-              สวัสดีครับ! สงสัยเรื่องการรายงานตัวหรือชั่วโมงกิจกรรมอาสา ถามผมได้ตลอด 24 ชั่วโมงเลยครับ
+              {getGreetingText()}
             </p>
             
             <button
