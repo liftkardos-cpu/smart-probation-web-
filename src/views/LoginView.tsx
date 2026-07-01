@@ -46,10 +46,30 @@ import {
 } from "lucide-react";
 
 // =============================================================
-// กำหนดลิงก์วิดีโอแนะนำระบบตรงนี้ (คุณสามารถนำลิงก์ไฟล์วิดีโอ .mp4 จริงของคุณมาใส่แทนได้เลย)
-// สามารถใส่ลิงก์ตรงจาก Cloud Storage, Google Drive (direct link), Vercel blob หรือ CDN อื่นๆ ได้
+// กำหนดลิงก์หรือไอดีวิดีโอ YouTube สำหรับวิดีโอแนะนำระบบตรงนี้
+// ท่านสามารถนำลิงก์จาก YouTube เช่น:
+// - https://www.youtube.com/watch?v=VIDEO_ID
+// - https://youtu.be/VIDEO_ID
+// - หรือเฉพาะไอดีวิดีโอ 11 หลัก เช่น dQw4w9WgXcQ มาใส่แทนได้เลย
 // =============================================================
-const INTRO_VIDEO_URL = "https://www.w3schools.com/html/mov_bbb.mp4";
+const YOUTUBE_VIDEO_URL_OR_ID = "https://youtu.be/X1QzdgmNyYQ$0";
+
+const getYouTubeEmbedUrl = (urlOrId: string) => {
+  if (!urlOrId) return "";
+  const trimmed = urlOrId.trim();
+  // ตรวจสอบว่าเป็นเฉพาะไอดีวิดีโอ 11 หลักหรือไม่
+  if (/^[a-zA-Z0-9_-]{11}$/.test(trimmed)) {
+    return `https://www.youtube.com/embed/${trimmed}?autoplay=1&mute=1&loop=1&playlist=${trimmed}`;
+  }
+  // ถอดรหัสหา ID จาก URL ในรูปแบบต่างๆ
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+  const match = trimmed.match(regExp);
+  const videoId = (match && match[2].length === 11) ? match[2] : "";
+  if (videoId) {
+    return `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}`;
+  }
+  return trimmed;
+};
 
 export const LoginView: React.FC = () => {
   const { setRole, setIsLoggedIn, addNotification, probationers, updateProbationerProfile } = useApp();
@@ -1451,14 +1471,12 @@ export const LoginView: React.FC = () => {
               transition={{ type: "spring", damping: 26, stiffness: 220 }}
               className="relative w-full max-w-4xl aspect-video rounded-3xl overflow-hidden bg-black/90 shadow-[0_0_60px_rgba(0,0,0,0.85)] border border-white/10"
             >
-              <video
-                src={INTRO_VIDEO_URL}
-                controls
-                autoPlay
-                muted
-                loop
-                playsInline
-                className="w-full h-full object-contain"
+              <iframe
+                src={getYouTubeEmbedUrl(YOUTUBE_VIDEO_URL_OR_ID)}
+                title="PROGRESS+ Introductory Video"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+                className="w-full h-full border-0"
               />
 
               {/* Minimal Floating Close Circle (Frosted Glass) */}
@@ -1473,7 +1491,7 @@ export const LoginView: React.FC = () => {
               {/* Tiny Floating Sound Hint */}
               <div className="absolute top-4 left-4 md:top-6 md:left-6 bg-black/50 backdrop-blur-md px-3.5 py-1.5 rounded-full text-[10px] text-white/90 font-medium tracking-wide flex items-center space-x-2 border border-white/10 pointer-events-none shadow-md">
                 <span className="w-1.5 h-1.5 bg-amber-400 rounded-full animate-pulse" />
-                <span>🔊 กดเปิดเสียงที่ตัวควบคุมวิดีโอ</span>
+                <span>🔊 คลิกเปิดเสียงในเครื่องเล่น YouTube</span>
               </div>
             </motion.div>
 
